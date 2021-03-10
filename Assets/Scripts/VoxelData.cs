@@ -9,6 +9,13 @@ public static class VoxelData
     public static readonly int ChunkWidth = 5;
     public static readonly int ChunkHeight = 15;
 
+    public static readonly int TextureAtlasSizeInBlocks = 4;
+    public static float NormalizeBlockTextureSize {
+        get{
+            return 1f / (float)TextureAtlasSizeInBlocks;
+        }
+    }
+
     public static readonly Vector3[] voxelVerts = new Vector3[8]
     {
         //Coordinates for Voxel
@@ -36,6 +43,8 @@ public static class VoxelData
     //Data for drawing triangles(polygons)
     public static readonly int[,] voxelTris = new int[6,4]
     {   
+        //Back, Front, Top, Bottom, Left, Right
+
        //0,3,1,1,3,2
         {0,3,1,2},  //Back Face
         {5,6,4,7},  //Front Face
