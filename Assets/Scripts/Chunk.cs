@@ -20,10 +20,22 @@ public class Chunk
 
     World world;
 
-    public Chunk ( ChunkCoord _coord, World _world) 
+    private bool _isActive;
+    public bool isVoxelMapPopulated = false;
+
+    public Chunk ( ChunkCoord _coord, World _world, bool generateOnLoad) 
     {
         coord = _coord;
         world = _world; //world reference
+        isActive = true;
+
+        if (generateOnLoad)
+            init();
+   
+    }
+
+    public void init () {
+
         chunkObject = new GameObject();
         meshFilter = chunkObject.AddComponent<MeshFilter>();
         meshRenderer = chunkObject.AddComponent<MeshRenderer>();
@@ -36,7 +48,7 @@ public class Chunk
 
         PopulateVoxelMap();
         CreateMeshData();
-        CreateMesh();      
+        CreateMesh();   
     }
 
 
@@ -51,6 +63,8 @@ public class Chunk
                 }
             }
         }
+
+        isVoxelMapPopulated = true;
     }
 
 
@@ -73,8 +87,12 @@ public class Chunk
     //Checking GameObject 
     public bool isActive {
 
-        get { return chunkObject.activeSelf; }
-        set { chunkObject.SetActive(value); }
+        get { return _isActive; }
+        set { 
+            _isActive = value;
+            if (chunkObject != null) 
+                chunkObject.SetActive(value);
+        }
 
     }
 
@@ -101,9 +119,21 @@ public class Chunk
         int z = Mathf.FloorToInt(pos.z);  
 
         if(!isVoxelInChunk(x, y, z))
-            return world.blocktypes[world.GetVoxel(pos + position)].isSolid;
+            return world.CheckForVoxel(pos + position);
 
         return world.blocktypes[voxelMap[x,y,z]].isSolid;
+    }
+
+    public byte GetVoxelFromGlobalVector3 (Vector3 pos) {
+
+        int xCheck = Mathf.FloorToInt(pos.x);  
+        int yCheck = Mathf.FloorToInt(pos.y);  
+        int zCheck = Mathf.FloorToInt(pos.z);  
+
+        xCheck -= Mathf.FloorToInt(chunkObject.transform.position.x);
+        zCheck -= Mathf.FloorToInt(chunkObject.transform.position.z);
+
+        return voxelMap[xCheck, yCheck, zCheck];
     }
 
 
@@ -169,13 +199,31 @@ public class Chunk
 
 //Position of the Chunk that we are drawing but not in world space
 public class ChunkCoord {
+
     public int x;
     public int z;
 
+    public ChunkCoord() {
+
+        x = 0;
+        z = 0; 
+
+    }
+
     public ChunkCoord (int _x, int _z) {
+
         x = _x;
         z = _z;
         
+    }
+
+    public ChunkCoord (Vector3 pos) {
+
+        int xCheck = Mathf.FloorToInt(pos.x);
+        int zCheck = Mathf.FloorToInt(pos.z);
+
+        x = xCheck / VoxelData.ChunkWidth;
+        z = zCheck / VoxelData.ChunkWidth;
     }
 
     public bool Equals (ChunkCoord other) {
