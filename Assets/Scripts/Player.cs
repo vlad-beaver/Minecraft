@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -16,7 +17,6 @@ public class Player : MonoBehaviour
     public float gravity = -9.8f;   //Gravity on Earth 9.807 m/s^2, one block in minecraft = 1 meter
 
     public float playerWidth = 0.19f;       //Our Mesh Collider
-    //public float boundsTolerance = 0.1f;
 
     private float horizontal;
     private float vertical;
@@ -26,11 +26,23 @@ public class Player : MonoBehaviour
     private float verticalMomentum = 0;
     private bool jumpRequest;
 
+    public Transform highlightBlock;
+    public Transform placeBlock;
+    public float checkIncrement = 0.1f;
+    public float reach = 8f;
+    
+    public Text selectedBlockText;
+    public byte selectedBlockIndex = 1;
+
+    
     private void Start () 
     {
 
         cam = GameObject.Find("Main Camera").transform;
         world = GameObject.Find("World").GetComponent<World>();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        selectedBlockText.text = world.blocktypes[selectedBlockIndex].blockName + "block selected";
 
     }
 
@@ -50,7 +62,38 @@ public class Player : MonoBehaviour
     {
 
         GetPlayerInputs();
+        placeCursorBlocks();
 
+    }
+
+    private void placeCursorBlocks () {
+
+        float step = checkIncrement;
+        Vector3 lastPos = new Vector3();
+
+        while (step < reach) {
+
+            Vector3 pos = cam.position + (cam.forward * step);
+
+            if (world.CheckForVoxel(pos)) {
+
+                highlightBlock.position = new Vector3 (Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), Mathf.FloorToInt(pos.z));
+                placeBlock.position = lastPos;
+
+                highlightBlock.gameObject.SetActive(true);
+                placeBlock.gameObject.SetActive(true);
+
+                return;
+
+            }
+            
+            lastPos = new Vector3 (Mathf.FloorToInt(pos.x), Mathf.FloorToInt(pos.y), Mathf.FloorToInt(pos.z));
+
+            step += checkIncrement;
+        }
+
+        highlightBlock.gameObject.SetActive(false);
+        placeBlock.gameObject.SetActive(false);
     }
 
     void Jump () {
@@ -101,6 +144,33 @@ public class Player : MonoBehaviour
         if (isGrounded && Input.GetButtonDown("Jump"))
             jumpRequest = true;
 
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+
+        if (scroll != 0) {
+
+            if(scroll > 0)
+                selectedBlockIndex++;
+            else
+                selectedBlockIndex--;
+
+            if (selectedBlockIndex > (byte)(world.blocktypes.Length - 1))
+                selectedBlockIndex = 1;
+            if (selectedBlockIndex < 1)
+                selectedBlockIndex = (byte)(world.blocktypes.Length - 1);
+            
+            selectedBlockText.text = world.blocktypes[selectedBlockIndex].blockName + "block selected";
+        }
+
+        if (highlightBlock.gameObject.activeSelf) {
+
+            //Destroy block
+            if (Input.GetMouseButtonDown(0))
+                world.GetChunkFromVector3(highlightBlock.position).EditVoxel(highlightBlock.position, 0);
+
+            //Place block
+            if (Input.GetMouseButtonDown(1))
+                world.GetChunkFromVector3(placeBlock.position).EditVoxel(placeBlock.position, selectedBlockIndex);
+        }
 
     }
 

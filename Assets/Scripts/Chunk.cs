@@ -47,8 +47,8 @@ public class Chunk
 
 
         PopulateVoxelMap();
-        CreateMeshData();
-        CreateMesh();   
+        UpdateChunk();
+   
     }
 
 
@@ -68,19 +68,32 @@ public class Chunk
     }
 
 
-    //Method for changing of voxel data with loops
-    void CreateMeshData(){
+    //Method for changing voxel data with loops
+    void UpdateChunk(){
+
+        ClearMeshData();
 
         for(int y = 0; y < VoxelData.ChunkHeight; y++){
             for(int x = 0; x < VoxelData.ChunkWidth; x++){
                 for(int z = 0; z < VoxelData.ChunkWidth; z++){
 
                     if (world.blocktypes[voxelMap[x, y, z]].isSolid)
-                        AddVoxelDataToChunk(new Vector3(x,y,z));
+                        UpdateMeshData(new Vector3(x,y,z));
 
                 }
             }
         }
+
+        CreateMesh();
+
+    }
+
+    void ClearMeshData () {
+
+        vertexIndex = 0;
+        vertices.Clear();
+        triangles.Clear();
+        uvs.Clear();
 
     }
 
@@ -108,6 +121,40 @@ public class Chunk
             return false;
         else 
             return true;
+    }
+
+    public void EditVoxel (Vector3 pos, byte newID) {
+
+        int xCheck = Mathf.FloorToInt(pos.x);  
+        int yCheck = Mathf.FloorToInt(pos.y);  
+        int zCheck = Mathf.FloorToInt(pos.z);  
+
+        xCheck -= Mathf.FloorToInt(chunkObject.transform.position.x);
+        zCheck -= Mathf.FloorToInt(chunkObject.transform.position.z);
+
+        voxelMap[xCheck, yCheck, zCheck] = newID;
+
+        UpdateSurroundingVoxels(xCheck, yCheck, zCheck);
+
+        UpdateChunk();
+    }
+
+    //Update Surrounding Chunks
+    void UpdateSurroundingVoxels (int x, int y, int z) {
+
+        Vector3 thisVoxel = new Vector3(x, y, z);
+
+        for (int p = 0; p < 6; p++) {
+
+            Vector3 currentVoxel = thisVoxel + VoxelData.faceChecks[p];
+
+            if (!isVoxelInChunk((int)currentVoxel.x, (int)currentVoxel.y, (int)currentVoxel.z)) {
+
+                world.GetChunkFromVector3(currentVoxel + position).UpdateChunk();
+
+            }
+
+        }
     }
 
     //Method for checking voxels visibility
@@ -138,7 +185,7 @@ public class Chunk
 
 
     //Method for adding voxel data to chunk
-    void AddVoxelDataToChunk(Vector3 pos){
+    void UpdateMeshData (Vector3 pos){
         for (int p = 0; p < 6; p++)
         {
             //We only drawing the faces if there is no voxel against that face
