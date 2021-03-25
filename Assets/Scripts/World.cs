@@ -218,6 +218,7 @@ public class World : MonoBehaviour
 public class BlockType {
     public string blockName;
     public bool isSolid;
+    public Sprite Icon;
 
     [Header ("Texture Values")]
     public int backFaceTexture;
