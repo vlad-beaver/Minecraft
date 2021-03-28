@@ -64,6 +64,7 @@
     <Compile Include="Assets\Scripts\World.cs" />
     <Compile Include="Assets\Scripts\BiomeAttributes.cs" />
     <Compile Include="Assets\Scripts\Noise.cs" />
+    <Compile Include="Assets\Scripts\Structure.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

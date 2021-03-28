@@ -20,6 +20,8 @@ public class Chunk
     //old version: bool [,,] voxelMap = new bool[VoxelData.ChunkWidth, VoxelData.ChunkHeight, VoxelData.ChunkWidth];
     public byte [,,] voxelMap = new byte[VoxelData.ChunkWidth, VoxelData.ChunkHeight, VoxelData.ChunkWidth];
 
+    public Queue<VoxelMod> modifications = new Queue<VoxelMod>();
+
     World world;
 
     private bool _isActive;
@@ -73,7 +75,14 @@ public class Chunk
 
 
     //Method for changing voxel data with loops
-    void UpdateChunk(){
+    public void UpdateChunk(){
+
+        while (modifications.Count > 0)
+        {
+            VoxelMod v = modifications.Dequeue();   //Takes first item from the list and remove it
+            Vector3 pos = v.position -= position;
+            voxelMap[(int)pos.x, (int)pos.y, (int)pos.z] = v.id;
+        }
 
         ClearMeshData();
 
