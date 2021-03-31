@@ -28,7 +28,12 @@ public class World : MonoBehaviour
 
     Queue<Queue<VoxelMod>> modifications = new Queue<Queue<VoxelMod>>();
 
+    private bool _inUI = false;
+
     public GameObject debugScreen;
+
+    public GameObject creativeInventoryWindow;
+    public GameObject cursorSlot;
 
     public void Start(){
 
@@ -127,24 +132,32 @@ public class World : MonoBehaviour
         {
             Queue<VoxelMod> queue = modifications.Dequeue();
 
-            while (queue.Count > 0)
+            try
             {
-
-                VoxelMod v = queue.Dequeue();
-
-                ChunkCoord c = GetChunkCoordFromVector3(v.position);
-
-                if (chunks[c.x, c.z] == null)
+                while (queue.Count > 0)
                 {
-                    chunks[c.x, c.z] = new Chunk(c, this, true);
-                    activeChunks.Add(c);
+
+                    VoxelMod v = queue.Dequeue();
+
+                    ChunkCoord c = GetChunkCoordFromVector3(v.position);
+
+                    if (chunks[c.x, c.z] == null)
+                    {
+                        chunks[c.x, c.z] = new Chunk(c, this, true);
+                        activeChunks.Add(c);
+                    }
+
+                    chunks[c.x, c.z].modifications.Enqueue(v);
+
+                    if (!chunksToUpdate.Contains(chunks[c.x, c.z]))
+                        chunksToUpdate.Add(chunks[c.x, c.z]);
                 }
-
-                chunks[c.x, c.z].modifications.Enqueue(v);
-
-                if (!chunksToUpdate.Contains(chunks[c.x, c.z]))
-                    chunksToUpdate.Add(chunks[c.x, c.z]);
             }
+            catch (System.NullReferenceException)
+            {
+                Debug.Log("Nullreference Exception again...");
+            }
+
 
 
         }
@@ -233,6 +246,29 @@ public class World : MonoBehaviour
 
     }
 
+    public bool inUI
+    {
+        get
+        {
+            return _inUI;
+        }
+        set
+        {
+            _inUI = value;
+            if (_inUI)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                creativeInventoryWindow.SetActive(true);
+                cursorSlot.SetActive(true);
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                creativeInventoryWindow.SetActive(false);
+                cursorSlot.SetActive(false);
+            }
+        }
+    }
 
     //World Algorithm
     public byte GetVoxel (Vector3 pos) {

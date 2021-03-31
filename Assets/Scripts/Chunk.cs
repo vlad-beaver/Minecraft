@@ -187,7 +187,7 @@ public class Chunk
 
             if (!isVoxelInChunk((int)currentVoxel.x, (int)currentVoxel.y, (int)currentVoxel.z)) {
 
-                world.GetChunkFromVector3(currentVoxel + position)._updateChunk();
+                world.GetChunkFromVector3(currentVoxel + position).UpdateChunk();
 
             }
 

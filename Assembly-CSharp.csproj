@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Chunk.cs" />
     <Compile Include="Assets\Scripts\DebugScreen.cs" />
+    <Compile Include="Assets\Scripts\UIItemSlot.cs" />
+    <Compile Include="Assets\Scripts\ItemStack.cs" />
     <Compile Include="Assets\Scripts\Toolbar.cs" />
     <Compile Include="Assets\Scripts\VoxelData.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
@@ -65,6 +67,8 @@
     <Compile Include="Assets\Scripts\BiomeAttributes.cs" />
     <Compile Include="Assets\Scripts\Noise.cs" />
     <Compile Include="Assets\Scripts\Structure.cs" />
+    <Compile Include="Assets\Scripts\DragAndDropHandler.cs" />
+    <Compile Include="Assets\Scripts\CreativeInvenotory.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
