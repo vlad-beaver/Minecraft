@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
 
 public class World : MonoBehaviour
 {
@@ -30,7 +31,7 @@ public class World : MonoBehaviour
     ChunkCoord playerLastChunkCoord;
 
     List<ChunkCoord> chunksToCreate = new List<ChunkCoord> ();
-    List<Chunk> chunksToUpdate = new List<Chunk>();
+    public List<Chunk> chunksToUpdate = new List<Chunk>();
     public Queue<Chunk> chunksToDraw = new Queue<Chunk>();
 
     bool applyingModifications = false;
@@ -44,66 +45,87 @@ public class World : MonoBehaviour
     public GameObject creativeInventoryWindow;
     public GameObject cursorSlot;
 
-    public void Start(){
+    Thread ChunkUpdateThread;
+    public object ChunkUpdateThreadLock = new object();
+
+    private void Start()
+    {
 
         Random.InitState(seed);
 
         Shader.SetGlobalFloat("minGlobalLightLevel", VoxelData.minLightLevel);
         Shader.SetGlobalFloat("maxGlobalLightLevel", VoxelData.maxLightLevel);
 
-        spawnPosition = new Vector3((VoxelData.WorldSizeInChunks * VoxelData.ChunkWidth) / 2f, VoxelData.ChunkHeight - 50f, 
-        (VoxelData.WorldSizeInChunks * VoxelData.ChunkWidth) / 2f);
+        if (enableThreading)
+        {
+            ChunkUpdateThread = new Thread(new ThreadStart(ThreadedUpdate));
+            ChunkUpdateThread.Start();
+        }
+
+        spawnPosition = new Vector3((VoxelData.WorldSizeInChunks * VoxelData.ChunkWidth) / 2f, VoxelData.ChunkHeight - 50f, (VoxelData.WorldSizeInChunks * VoxelData.ChunkWidth) / 2f);
         GenerateWorld();
         playerLastChunkCoord = GetChunkCoordFromVector3(player.position);
 
     }
 
-    private void Update () {
+    private void Update()
+    {
 
         playerChunkCoord = GetChunkCoordFromVector3(player.position);
 
         Shader.SetGlobalFloat("GlobalLightLevel", globalLightLevel);
         Camera.main.backgroundColor = Color.Lerp(night, day, globalLightLevel);
 
-        //Only update the chunks if the player has moved from the chunk they were previously on
+        // Only update the chunks if the player has moved from the chunk they were previously on.
         if (!playerChunkCoord.Equals(playerLastChunkCoord))
-           CheckViewDistance();
-
-        if (!applyingModifications)
-            ApplyModifications();
+            CheckViewDistance();
 
         if (chunksToCreate.Count > 0)
             CreateChunk();
 
-        if (chunksToUpdate.Count > 0)
-            UpdateChunks();
-
         if (chunksToDraw.Count > 0)
-            lock (chunksToDraw)
-            {
-                if (chunksToDraw.Peek().isEditable)
-                    chunksToDraw.Dequeue().CreateMesh();
-            }
+        {
+
+            if (chunksToDraw.Peek().isEditable)
+                chunksToDraw.Dequeue().CreateMesh();
+
+        }
+
+        if (!enableThreading)
+        {
+
+            if (!applyingModifications)
+                ApplyModifications();
+
+            if (chunksToUpdate.Count > 0)
+                UpdateChunks();
+
+        }
 
         if (Input.GetKeyDown(KeyCode.F3))
             debugScreen.SetActive(!debugScreen.activeSelf);
 
+
     }
 
-    void GenerateWorld () {
+    void GenerateWorld()
+    {
 
-        for(int x = (VoxelData.WorldSizeInChunks / 2) - VoxelData.ViewDistanceInChunks;
-         x < (VoxelData.WorldSizeInChunks / 2) + VoxelData.ViewDistanceInChunks; x++){
-            for(int z = (VoxelData.WorldSizeInChunks / 2) - VoxelData.ViewDistanceInChunks;
-             z < (VoxelData.WorldSizeInChunks / 2) + VoxelData.ViewDistanceInChunks; z++){
-                
-                chunks[x, z] = new Chunk(new ChunkCoord(x, z), this, true);
-                activeChunks.Add(new ChunkCoord(x, z));
+        for (int x = (VoxelData.WorldSizeInChunks / 2) - VoxelData.ViewDistanceInChunks; x < (VoxelData.WorldSizeInChunks / 2) + VoxelData.ViewDistanceInChunks; x++)
+        {
+            for (int z = (VoxelData.WorldSizeInChunks / 2) - VoxelData.ViewDistanceInChunks; z < (VoxelData.WorldSizeInChunks / 2) + VoxelData.ViewDistanceInChunks; z++)
+            {
+
+                ChunkCoord newChunk = new ChunkCoord(x, z);
+                chunks[x, z] = new Chunk(newChunk, this);
+                chunksToCreate.Add(newChunk);
 
             }
         }
 
         player.position = spawnPosition;
+        CheckViewDistance();
+
     }
 
     void CreateChunk ()
@@ -111,29 +133,59 @@ public class World : MonoBehaviour
 
         ChunkCoord c = chunksToCreate[0];
         chunksToCreate.RemoveAt(0);
-        activeChunks.Add(c);
         chunks[c.x, c.z].init();
 
     }
 
-    void UpdateChunks ()
+    void UpdateChunks()
     {
 
         bool updated = false;
         int index = 0;
 
-        while (!updated && index < chunksToUpdate.Count - 1)
+        lock (ChunkUpdateThreadLock)
         {
-            if (chunksToUpdate[index].isEditable)
+
+            while (!updated && index < chunksToUpdate.Count - 1)
             {
-                chunksToUpdate[index].UpdateChunk();
-                chunksToUpdate.RemoveAt(index);
-                updated = true;
+
+                if (chunksToUpdate[index].isEditable)
+                {
+                    chunksToUpdate[index].UpdateChunk();
+                    chunksToUpdate.RemoveAt(index);
+                    updated = true;
+                }
+                else
+                    index++;
+
             }
-            else
-            {
-                index++;
-            }
+
+        }
+
+    }
+
+    void ThreadedUpdate()
+    {
+
+        while (true)
+        {
+
+            if (!applyingModifications)
+                ApplyModifications();
+
+            if (chunksToUpdate.Count > 0)
+                UpdateChunks();
+
+        }
+
+    }
+
+    private void OnDisable()
+    {
+
+        if (enableThreading)
+        {
+            ChunkUpdateThread.Abort();
         }
 
     }
@@ -147,31 +199,29 @@ public class World : MonoBehaviour
         {
             Queue<VoxelMod> queue = modifications.Dequeue();
 
-            try
+            //try
+            //{
+            while (queue.Count > 0)
             {
-                while (queue.Count > 0)
+
+                VoxelMod v = queue.Dequeue();
+
+                ChunkCoord c = GetChunkCoordFromVector3(v.position);
+
+                if (chunks[c.x, c.z] == null)
                 {
-
-                    VoxelMod v = queue.Dequeue();
-
-                    ChunkCoord c = GetChunkCoordFromVector3(v.position);
-
-                    if (chunks[c.x, c.z] == null)
-                    {
-                        chunks[c.x, c.z] = new Chunk(c, this, true);
-                        activeChunks.Add(c);
-                    }
-
-                    chunks[c.x, c.z].modifications.Enqueue(v);
-
-                    if (!chunksToUpdate.Contains(chunks[c.x, c.z]))
-                        chunksToUpdate.Add(chunks[c.x, c.z]);
+                    chunks[c.x, c.z] = new Chunk(c, this);
+                    chunksToCreate.Add(c);
                 }
+
+                chunks[c.x, c.z].modifications.Enqueue(v);
+
             }
-            catch (System.NullReferenceException)
-            {
-                Debug.Log("Nullreference Exception again...");
-            }
+            //}
+            //catch (System.NullReferenceException)
+            //{
+            //    Debug.Log("Nullreference Exception again...");
+            //}
 
 
 
@@ -197,39 +247,55 @@ public class World : MonoBehaviour
 
     }
 
-    void CheckViewDistance () {
+    void CheckViewDistance()
+    {
 
         ChunkCoord coord = GetChunkCoordFromVector3(player.position);
         playerLastChunkCoord = playerChunkCoord;
 
-        List<ChunkCoord>previouslyActiveChunks = new List<ChunkCoord>(activeChunks);
+        List<ChunkCoord> previouslyActiveChunks = new List<ChunkCoord>(activeChunks);
 
-        for (int x = coord.x - VoxelData.ViewDistanceInChunks; x< coord.x + VoxelData.ViewDistanceInChunks; x++){
-            for (int z = coord.z - VoxelData.ViewDistanceInChunks; z < coord.z + VoxelData.ViewDistanceInChunks; z++){
-            
-                if (isChunkInWorld (new ChunkCoord (x,z))) {
+        activeChunks.Clear();
 
-                    if(chunks[x, z] == null) {
-                        chunks[x, z] = new Chunk(new ChunkCoord(x, z), this, false);
+        //Loop through all chunks currently within view distance of the player.
+        for (int x = coord.x - VoxelData.ViewDistanceInChunks; x < coord.x + VoxelData.ViewDistanceInChunks; x++)
+        {
+            for (int z = coord.z - VoxelData.ViewDistanceInChunks; z < coord.z + VoxelData.ViewDistanceInChunks; z++)
+            {
+
+                //If the current chunk is in the world...
+                if (isChunkInWorld(new ChunkCoord(x, z)))
+                {
+
+                    // Check if it active, if not, activate it.
+                    if (chunks[x, z] == null)
+                    {
+                        chunks[x, z] = new Chunk(new ChunkCoord(x, z), this);
                         chunksToCreate.Add(new ChunkCoord(x, z));
                     }
-                    else if (!chunks[x, z].isActive){
+                    else if (!chunks[x, z].isActive)
+                    {
                         chunks[x, z].isActive = true;
                     }
                     activeChunks.Add(new ChunkCoord(x, z));
-
                 }
 
-                for (int i = 0; i < previouslyActiveChunks.Count; i++) {
+                //Check through previously active chunks to see if this chunk is there. If it is, remove it from the list.
+                for (int i = 0; i < previouslyActiveChunks.Count; i++)
+                {
 
-                    if (previouslyActiveChunks[i].Equals (new ChunkCoord(x, z)))
+                    if (previouslyActiveChunks[i].Equals(new ChunkCoord(x, z)))
                         previouslyActiveChunks.RemoveAt(i);
+
                 }
+
             }
         }
 
+        //Any chunks left in the previousActiveChunks list are no longer in the player's view distance, so loop through and disable them.
         foreach (ChunkCoord c in previouslyActiveChunks)
             chunks[c.x, c.z].isActive = false;
+
     }
 
     public bool CheckForVoxel (Vector3 pos) {
