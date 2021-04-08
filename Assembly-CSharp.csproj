@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\Structure.cs" />
   </ItemGroup>
   <ItemGroup>
+     <None Include="Assets\Scripts\TransparentBlockShader.shader" />
      <None Include="Assets\Scripts\StandardBlockShader.shader" />
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.1.17f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>

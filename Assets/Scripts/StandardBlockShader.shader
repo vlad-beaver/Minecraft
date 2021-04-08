@@ -5,7 +5,7 @@
 	}
 
 	SubShader{
-		Tags {"Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType" = "TransparentCutout"}
+		Tags {"RenderType" = "Opaque"}
 		LOD 100
 		Lighting Off
 
@@ -59,7 +59,7 @@
 					shade *= i.color.a;
 					shade = clamp(1 - shade, minGlobalLightLevel, maxGlobalLightLevel);
 
-					clip(col.a - 1);
+					//clip(col.a - 1);
 					col = lerp(col, float4(0, 0, 0, 1), shade);
 
 					return col;
