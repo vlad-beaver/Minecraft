@@ -2731,9 +2731,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3fe184922db6734e971236d5177ee31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 2147483647
+  settings:
+    version: 1.0.0
+    viewDistance: 4
+    enableThreading: 1
+    mouseSensitivity: 4.5
+    seed: 123124
   biome: {fileID: 11400000, guid: ebb4873d5a2be2b4396cd8490855908a, type: 2}
-  enableThreading: 1
   globalLightLevel: 1
   day: {r: 0, g: 1, b: 1, a: 0}
   night: {r: 0, g: 0.03582697, b: 0.3679245, a: 0}
