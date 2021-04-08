@@ -83,6 +83,8 @@ public class Chunk
             world.chunksToUpdate.Add(this);
         }
 
+        chunkObject.AddComponent<ChunkLoadAnimation>();
+
     }
 
 

@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\Noise.cs" />
     <Compile Include="Assets\Scripts\CreativeInvenotory.cs" />
     <Compile Include="Assets\Scripts\Structure.cs" />
+    <Compile Include="Assets\Scripts\ChunkLoadAnimation.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Scripts\TransparentBlockShader.shader" />
