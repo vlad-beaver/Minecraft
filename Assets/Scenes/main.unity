@@ -1423,7 +1423,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1173351397
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2709,7 +2709,6 @@ MonoBehaviour:
     enableThreading: 1
     enableAnimatedChunks: 1
     mouseSensitivity: 2
-    seed: 123124
   biomes:
   - {fileID: 11400000, guid: ebb4873d5a2be2b4396cd8490855908a, type: 2}
   - {fileID: 11400000, guid: 383b5aacfb4f25049b0ead08a5cdca95, type: 2}
