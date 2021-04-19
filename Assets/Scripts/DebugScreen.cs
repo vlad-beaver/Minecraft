@@ -15,6 +15,8 @@ public class DebugScreen : MonoBehaviour
     int halfWorldSizeInVoxels;
     int halfWorldSizeInChunks;
 
+    public static string consoleText;
+
     void Start()
     {
         world = GameObject.Find("World").GetComponent<World>();
@@ -26,13 +28,12 @@ public class DebugScreen : MonoBehaviour
 
     void Update()
     {
-        
         string debugText = "vlad-beaver' Unity Minecraft clone\n";
-        debugText += frameRate + " fps\n\n";
-        debugText += "XYZ: "+   (Mathf.FloorToInt(world.player.transform.position.x) - halfWorldSizeInVoxels) + " / " + 
-                                Mathf.FloorToInt(world.player.transform.position.y) + " / " +
-                                (Mathf.FloorToInt(world.player.transform.position.z) - halfWorldSizeInVoxels) + "\n";
-        //debugText += "Chunk: " + (world.playerChunkCoord.x - halfWorldSizeInChunks) + " / " + (world.playerChunkCoord.z - halfWorldSizeInChunks);
+        debugText += frameRate + " fps\n";
+        //debugText += "XYZ: "+   (Mathf.FloorToInt(world.player.transform.position.x) - halfWorldSizeInVoxels) + " / " + 
+        //                        Mathf.FloorToInt(world.player.transform.position.y) + " / " +
+        //                        (Mathf.FloorToInt(world.player.transform.position.z) - halfWorldSizeInVoxels) + "\n";
+        debugText += "Status: " + consoleText;
 
         text.text = debugText;
 
