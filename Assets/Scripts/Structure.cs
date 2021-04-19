@@ -15,8 +15,8 @@ public static class Structure
             case 1:
                 return MakeCacti(position, minTrunkHeight, maxTrunkHeight);
 
-            case 3:
-                return MakeTree(position, minTrunkHeight, maxTrunkHeight);
+            //case 3:
+            //    return MakeTree(position, minTrunkHeight, maxTrunkHeight);
         } 
 
         return new Queue<VoxelMod>();

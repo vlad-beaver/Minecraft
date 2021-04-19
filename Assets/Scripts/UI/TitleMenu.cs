@@ -45,7 +45,7 @@ public class TitleMenu : MonoBehaviour
     public void StartGame()
     {
         VoxelData.seed = Mathf.Abs(seedField.text.GetHashCode()) / VoxelData.WorldSizeInChunks;
-        SceneManager.LoadScene("main", LoadSceneMode.Single);
+        SceneManager.LoadScene("Game", LoadSceneMode.Single);
     }
     public void EnterSettings()
     {

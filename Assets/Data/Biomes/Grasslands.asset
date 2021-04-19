@@ -15,7 +15,7 @@ MonoBehaviour:
   biomeName: Grasslands
   offset: 1234
   scale: 0.042
-  terrainHeight: 22
+  terrainHeight: 80
   terrainScale: 0.15
   surfaceBlock: 3
   subSurfaceBlock: 5
