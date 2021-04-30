@@ -2704,10 +2704,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
-    version: 1.0.0
-    viewDistance: 4
-    enableThreading: 1
-    enableAnimatedChunks: 1
+    version: 0.0.3
+    loadDistance: 4
+    viewDistance: 2
+    enableThreading: 0
+    enableAnimatedChunks: 0
     mouseSensitivity: 2
   biomes:
   - {fileID: 11400000, guid: ebb4873d5a2be2b4396cd8490855908a, type: 2}
@@ -2735,7 +2736,7 @@ MonoBehaviour:
     isSolid: 1
     renderNeighborFaces: 0
     transparency: 0
-    Icon: {fileID: 1658201283926802149, guid: a729cc93ea250a64a9d18617be479256, type: 3}
+    Icon: {fileID: 1658201283926802149, guid: 52af1a71dca0e4c4990ac49fae814fe7, type: 3}
     backFaceTexture: 9
     frontFaceTexture: 9
     topFaceTexture: 9
@@ -2746,7 +2747,7 @@ MonoBehaviour:
     isSolid: 1
     renderNeighborFaces: 0
     transparency: 0
-    Icon: {fileID: -9190054672469268964, guid: a729cc93ea250a64a9d18617be479256, type: 3}
+    Icon: {fileID: -9190054672469268964, guid: 52af1a71dca0e4c4990ac49fae814fe7, type: 3}
     backFaceTexture: 0
     frontFaceTexture: 0
     topFaceTexture: 0
@@ -2757,7 +2758,7 @@ MonoBehaviour:
     isSolid: 1
     renderNeighborFaces: 0
     transparency: 0
-    Icon: {fileID: -2173331863962407998, guid: a729cc93ea250a64a9d18617be479256, type: 3}
+    Icon: {fileID: -2173331863962407998, guid: 52af1a71dca0e4c4990ac49fae814fe7, type: 3}
     backFaceTexture: 2
     frontFaceTexture: 2
     topFaceTexture: 7
@@ -2768,7 +2769,7 @@ MonoBehaviour:
     isSolid: 1
     renderNeighborFaces: 0
     transparency: 0
-    Icon: {fileID: 4178355347634356053, guid: a729cc93ea250a64a9d18617be479256, type: 3}
+    Icon: {fileID: -5579962401935626545, guid: 52af1a71dca0e4c4990ac49fae814fe7, type: 3}
     backFaceTexture: 10
     frontFaceTexture: 10
     topFaceTexture: 10
@@ -2779,7 +2780,7 @@ MonoBehaviour:
     isSolid: 1
     renderNeighborFaces: 0
     transparency: 0
-    Icon: {fileID: -8387793910672067857, guid: a729cc93ea250a64a9d18617be479256, type: 3}
+    Icon: {fileID: -8387793910672067857, guid: 52af1a71dca0e4c4990ac49fae814fe7, type: 3}
     backFaceTexture: 1
     frontFaceTexture: 1
     topFaceTexture: 1
@@ -2790,7 +2791,7 @@ MonoBehaviour:
     isSolid: 1
     renderNeighborFaces: 0
     transparency: 0
-    Icon: {fileID: 8279079627158457885, guid: a729cc93ea250a64a9d18617be479256, type: 3}
+    Icon: {fileID: 8279079627158457885, guid: 52af1a71dca0e4c4990ac49fae814fe7, type: 3}
     backFaceTexture: 5
     frontFaceTexture: 5
     topFaceTexture: 6
@@ -2801,7 +2802,7 @@ MonoBehaviour:
     isSolid: 1
     renderNeighborFaces: 0
     transparency: 0
-    Icon: {fileID: -5579962401935626545, guid: a729cc93ea250a64a9d18617be479256, type: 3}
+    Icon: {fileID: 7391409288775618200, guid: 52af1a71dca0e4c4990ac49fae814fe7, type: 3}
     backFaceTexture: 4
     frontFaceTexture: 4
     topFaceTexture: 4
@@ -2812,7 +2813,7 @@ MonoBehaviour:
     isSolid: 1
     renderNeighborFaces: 0
     transparency: 0
-    Icon: {fileID: -1190241618586288452, guid: a729cc93ea250a64a9d18617be479256, type: 3}
+    Icon: {fileID: -1190241618586288452, guid: 52af1a71dca0e4c4990ac49fae814fe7, type: 3}
     backFaceTexture: 11
     frontFaceTexture: 11
     topFaceTexture: 11
@@ -2823,7 +2824,7 @@ MonoBehaviour:
     isSolid: 1
     renderNeighborFaces: 0
     transparency: 0
-    Icon: {fileID: 7391409288775618200, guid: a729cc93ea250a64a9d18617be479256, type: 3}
+    Icon: {fileID: 405144900801533865, guid: 52af1a71dca0e4c4990ac49fae814fe7, type: 3}
     backFaceTexture: 8
     frontFaceTexture: 8
     topFaceTexture: 8
@@ -2834,7 +2835,7 @@ MonoBehaviour:
     isSolid: 1
     renderNeighborFaces: 1
     transparency: 1
-    Icon: {fileID: -1867609910350370242, guid: a729cc93ea250a64a9d18617be479256, type: 3}
+    Icon: {fileID: -1867609910350370242, guid: 52af1a71dca0e4c4990ac49fae814fe7, type: 3}
     backFaceTexture: 3
     frontFaceTexture: 3
     topFaceTexture: 3
@@ -2845,7 +2846,7 @@ MonoBehaviour:
     isSolid: 1
     renderNeighborFaces: 1
     transparency: 0.75
-    Icon: {fileID: -1867609910350370242, guid: a729cc93ea250a64a9d18617be479256, type: 3}
+    Icon: {fileID: 4178355347634356053, guid: 52af1a71dca0e4c4990ac49fae814fe7, type: 3}
     backFaceTexture: 16
     frontFaceTexture: 16
     topFaceTexture: 16
@@ -2856,7 +2857,7 @@ MonoBehaviour:
     isSolid: 1
     renderNeighborFaces: 1
     transparency: 0
-    Icon: {fileID: -1867609910350370242, guid: a729cc93ea250a64a9d18617be479256, type: 3}
+    Icon: {fileID: -1547569821520727567, guid: 52af1a71dca0e4c4990ac49fae814fe7, type: 3}
     backFaceTexture: 18
     frontFaceTexture: 18
     topFaceTexture: 19
@@ -2867,7 +2868,7 @@ MonoBehaviour:
     isSolid: 1
     renderNeighborFaces: 1
     transparency: 0
-    Icon: {fileID: -1867609910350370242, guid: a729cc93ea250a64a9d18617be479256, type: 3}
+    Icon: {fileID: -1547569821520727567, guid: 52af1a71dca0e4c4990ac49fae814fe7, type: 3}
     backFaceTexture: 18
     frontFaceTexture: 18
     topFaceTexture: 17
@@ -2877,6 +2878,10 @@ MonoBehaviour:
   debugScreen: {fileID: 1173351396}
   creativeInventoryWindow: {fileID: 1452731549}
   cursorSlot: {fileID: 2082844974}
+  worldData:
+    worldName: 
+    seed: 0
+  appPath: 
 --- !u!4 &1902799706
 Transform:
   m_ObjectHideFlags: 0

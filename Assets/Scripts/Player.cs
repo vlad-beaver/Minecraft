@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -140,10 +141,12 @@ public class Player : MonoBehaviour
             velocity.y = checkUpSpeed(velocity.y);
     }
 
-    private void GetPlayerInputs () {
+    private void GetPlayerInputs() {
 
-        if (Input.GetKeyDown(KeyCode.Escape))
-            Application.Quit();
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            world.inUI = !world.inUI;
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        }
 
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");

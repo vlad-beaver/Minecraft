@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a729cc93ea250a64a9d18617be479256
+guid: 52af1a71dca0e4c4990ac49fae814fe7
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -25,13 +25,19 @@ TextureImporter:
     second: bedrock_icon
   - first:
       213: 4178355347634356053
-    second: sand_icon
+    second: leaves_icon
   - first:
       213: -5579962401935626545
-    second: plankicon
+    second: sand_icon
   - first:
       213: 7391409288775618200
+    second: plank_icon
+  - first:
+      213: 405144900801533865
     second: cobblestone_icon
+  - first:
+      213: -1547569821520727567
+    second: cactus_icon
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -326,11 +332,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sand_icon
+      name: leaves_icon
       rect:
         serializedVersion: 2
-        x: 0
-        y: 32
+        x: 96
+        y: 64
         width: 32
         height: 32
       alignment: 0
@@ -347,7 +353,28 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: plankicon
+      name: sand_icon
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fce679462cdff82b0800000000000000
+      internalID: -5579962401935626545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: plank_icon
       rect:
         serializedVersion: 2
         x: 32
@@ -361,8 +388,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fce679462cdff82b0800000000000000
-      internalID: -5579962401935626545
+      spriteID: 89e4ef6369f839660800000000000000
+      internalID: 7391409288775618200
       vertices: []
       indices: 
       edges: []
@@ -382,8 +409,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 89e4ef6369f839660800000000000000
-      internalID: 7391409288775618200
+      spriteID: 9a716d6042d5f9500800000000000000
+      internalID: 405144900801533865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: cactus_icon
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f1742b527de58ae0800000000000000
+      internalID: -1547569821520727567
       vertices: []
       indices: 
       edges: []
@@ -391,7 +439,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: e0a702d002583824c8b1fbd63823abd7
     internalID: 0
     vertices: []
     indices: 

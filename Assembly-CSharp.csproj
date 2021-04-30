@@ -62,6 +62,7 @@
     <Compile Include="Assets\Scripts\UIItemSlot.cs" />
     <Compile Include="Assets\Scripts\ItemStack.cs" />
     <Compile Include="Assets\Scripts\Toolbar.cs" />
+    <Compile Include="Assets\Scripts\SaveSystem.cs" />
     <Compile Include="Assets\Scripts\VoxelData.cs" />
     <Compile Include="Assets\Scripts\Data\ChunkData.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
@@ -73,7 +74,6 @@
     <Compile Include="Assets\Scripts\CreativeInvenotory.cs" />
     <Compile Include="Assets\Scripts\ChunkLoadAnimation.cs" />
     <Compile Include="Assets\Scripts\Structure.cs" />
-    <Compile Include="Assets\Scripts\SaveSystem.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
