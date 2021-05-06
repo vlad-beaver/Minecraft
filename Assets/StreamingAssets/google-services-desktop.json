@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "502938691084",
+    "firebase_url": "https://minecraftunity-1e525-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "minecraftunity-1e525",
+    "storage_bucket": "minecraftunity-1e525.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502938691084:android:210e476e60281d6788f029",
+        "android_client_info": {
+          "package_name": "com.vladbeaver.MinecraftUnityClone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502938691084-1odrma473gcrj1thlfcf0cel835103fc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBg6CEVpcvlWZ5NOEpqwKW1MzI4oshhkN4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502938691084-1odrma473gcrj1thlfcf0cel835103fc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
