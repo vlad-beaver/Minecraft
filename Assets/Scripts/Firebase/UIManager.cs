@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class UIManager : MonoBehaviour
@@ -41,6 +42,13 @@ public class UIManager : MonoBehaviour
         ClearScreen();
         loginUI.SetActive(true);
     }
+
+    public void QuitGame() //Quit button
+    {
+        Application.Quit();
+        Debug.Log("Quitting the game.");
+    }
+
     public void RegisterScreen() // Regester button
     {
         ClearScreen();
@@ -51,6 +59,11 @@ public class UIManager : MonoBehaviour
     {
         ClearScreen();
         userDataUI.SetActive(true);
+    }
+    public void StartGame() //Start button
+    {
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        Debug.Log("Starting the game.");
     }
 
     public void ScoreboardScreen() //Scoreboard button

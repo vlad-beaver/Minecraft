@@ -77,6 +77,7 @@ public class TitleMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+        Debug.Log("Quitting the game.");
     }
 
     public void UpdateViewDstSlider ()
