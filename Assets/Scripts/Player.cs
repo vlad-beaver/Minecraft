@@ -161,24 +161,32 @@ public class Player : MonoBehaviour
         if (isGrounded && Input.GetButtonDown("Jump"))
             jumpRequest = true;
 
-
-        if (highlightBlock.gameObject.activeSelf) {
-
-            //Destroy block
-            if (Input.GetMouseButtonDown(0))
-                world.GetChunkFromVector3(highlightBlock.position).EditVoxel(highlightBlock.position, 0);
-
-            //Place block
-            if (Input.GetMouseButtonDown(1))
+        try
+        {
+            if (highlightBlock.gameObject.activeSelf)
             {
-                if (toolbar.slots[toolbar.slotIndex].HasItem)
-                {
-                    world.GetChunkFromVector3(placeBlock.position).EditVoxel(placeBlock.position, toolbar.slots[toolbar.slotIndex].itemSlot.stack.id);
-                    toolbar.slots[toolbar.slotIndex].itemSlot.Take(1);
-                }
-            }
 
+                //Destroy block
+                if (Input.GetMouseButtonDown(0))
+                    world.GetChunkFromVector3(highlightBlock.position).EditVoxel(highlightBlock.position, 0);
+
+                //Place block
+                if (Input.GetMouseButtonDown(1))
+                {
+                    if (toolbar.slots[toolbar.slotIndex].HasItem)
+                    {
+                        world.GetChunkFromVector3(placeBlock.position).EditVoxel(placeBlock.position, toolbar.slots[toolbar.slotIndex].itemSlot.stack.id);
+                        toolbar.slots[toolbar.slotIndex].itemSlot.Take(1);
+                    }
+                }
+
+            }
         }
+        catch
+        {
+            SceneManager.LoadScene("Game", LoadSceneMode.Single);
+        }
+        
 
     }
 

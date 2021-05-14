@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class World : MonoBehaviour
 {
 
+    private World world;
     public Settings settings;
 
     [Header("World Generation Values")] 
@@ -332,13 +334,20 @@ public class World : MonoBehaviour
     }
 
     public bool CheckForVoxel (Vector3 pos) {
+        try
+        {
+            VoxelState voxel = worldData.GetVoxel(pos);
 
-        VoxelState voxel = worldData.GetVoxel(pos);
-
-        if (blocktypes[voxel.id].isSolid)
+            if (blocktypes[voxel.id].isSolid)
+                return true;
+            else
+                return false;
+        }
+        catch
+        {
+            SceneManager.LoadScene("Game", LoadSceneMode.Single);
             return true;
-        else
-            return false;
+        }
 
     }
 

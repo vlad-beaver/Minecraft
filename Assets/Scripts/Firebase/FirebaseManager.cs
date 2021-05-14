@@ -34,8 +34,8 @@ public class FirebaseManager : MonoBehaviour
     [Header("UserData")]
     public TMP_InputField usernameField;
     public TMP_InputField xpField;
-    public TMP_InputField killsField;
-    public TMP_InputField deathsField;
+    public TMP_InputField graphicsField;
+    public TMP_InputField gameplayField;
     public GameObject scoreElement;
     public Transform scoreboardContent;
 
@@ -105,8 +105,8 @@ public class FirebaseManager : MonoBehaviour
         StartCoroutine(UpdateUsernameDatabase(usernameField.text));
 
         StartCoroutine(UpdateXp(int.Parse(xpField.text)));
-        StartCoroutine(UpdateKills(int.Parse(killsField.text)));
-        StartCoroutine(UpdateDeaths(int.Parse(deathsField.text)));
+        StartCoroutine(UpdateGraphics(int.Parse(graphicsField.text)));
+        StartCoroutine(UpdateGameplay(int.Parse(gameplayField.text)));
     }
     //Function for the scoreboard button
     public void ScoreboardButton()
@@ -300,10 +300,10 @@ public class FirebaseManager : MonoBehaviour
         }
     }
 
-    private IEnumerator UpdateKills(int _kills)
+    private IEnumerator UpdateGraphics(int _graphics)
     {
-        //Set the currently logged in user kills
-        var DBTask = DBreference.Child("users").Child(User.UserId).Child("kills").SetValueAsync(_kills);
+        //Set the currently logged in user graphics
+        var DBTask = DBreference.Child("users").Child(User.UserId).Child("graphics").SetValueAsync(_graphics);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
@@ -313,14 +313,14 @@ public class FirebaseManager : MonoBehaviour
         }
         else
         {
-            //Kills are now updated
+            //graphics are now updated
         }
     }
 
-    private IEnumerator UpdateDeaths(int _deaths)
+    private IEnumerator UpdateGameplay(int _gameplay)
     {
-        //Set the currently logged in user deaths
-        var DBTask = DBreference.Child("users").Child(User.UserId).Child("deaths").SetValueAsync(_deaths);
+        //Set the currently logged in user gameplay
+        var DBTask = DBreference.Child("users").Child(User.UserId).Child("gameplay").SetValueAsync(_gameplay);
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
@@ -330,7 +330,7 @@ public class FirebaseManager : MonoBehaviour
         }
         else
         {
-            //Deaths are now updated
+            //gameplay are now updated
         }
     }
     private IEnumerator LoadUserData()
@@ -348,8 +348,8 @@ public class FirebaseManager : MonoBehaviour
         {
             //No data exists yet
             xpField.text = "0";
-            killsField.text = "0";
-            deathsField.text = "0";
+            graphicsField.text = "0";
+            gameplayField.text = "0";
         }
         else
         {
@@ -357,14 +357,14 @@ public class FirebaseManager : MonoBehaviour
             DataSnapshot snapshot = DBTask.Result;
 
             xpField.text = snapshot.Child("xp").Value.ToString();
-            killsField.text = snapshot.Child("kills").Value.ToString();
-            deathsField.text = snapshot.Child("deaths").Value.ToString();
+            graphicsField.text = snapshot.Child("graphics").Value.ToString();
+            gameplayField.text = snapshot.Child("gameplay").Value.ToString();
         }
     }
     private IEnumerator LoadScoreboardData()
     {
-        //Get all the users data ordered by kills amount
-        var DBTask = DBreference.Child("users").OrderByChild("kills").GetValueAsync();
+        //Get all the users data ordered by graphics amount
+        var DBTask = DBreference.Child("users").OrderByChild("graphics").GetValueAsync();
 
         yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
 
@@ -387,13 +387,13 @@ public class FirebaseManager : MonoBehaviour
             foreach (DataSnapshot childSnapshot in snapshot.Children.Reverse<DataSnapshot>())
             {
                 string username = childSnapshot.Child("username").Value.ToString();
-                int kills = int.Parse(childSnapshot.Child("kills").Value.ToString());
-                int deaths = int.Parse(childSnapshot.Child("deaths").Value.ToString());
+                int graphics = int.Parse(childSnapshot.Child("graphics").Value.ToString());
+                int gameplay = int.Parse(childSnapshot.Child("gameplay").Value.ToString());
                 int xp = int.Parse(childSnapshot.Child("xp").Value.ToString());
 
                 //Instantiate new scoreboard elements
                 GameObject scoreboardElement = Instantiate(scoreElement, scoreboardContent);
-                scoreboardElement.GetComponent<ScoreElement>().NewScoreElement(username, kills, deaths, xp);
+                scoreboardElement.GetComponent<ScoreElement>().NewScoreElement(username, graphics, gameplay, xp);
             }
 
             //Go to scoareboard screen
